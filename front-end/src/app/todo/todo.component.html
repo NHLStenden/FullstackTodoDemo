@@ -1,0 +1,40 @@
+<h1>Todo component!</h1>
+
+<p><a [routerLink]="['/todo']">Show all todos</a></p>
+
+<p *ngIf="slug">Slug: {{slug}}</p>
+
+<h1>Categories</h1>
+<ng-container *ngIf="(categories$ | async) as categories">
+  <table>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td><a [routerLink]="['/todo', category.slug]">{{category.description}}</a></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+<h1>Todos</h1>
+<ng-container *ngIf="(todos$ | async) as todos">
+  <table>
+    <thead>
+    <th>Completed</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Slug</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let todo of todos">
+      <td>{{todo.completed}}</td>
+      <td>{{todo.description}}</td>
+      <td>{{todo.category}}</td>
+      <td>{{!todo.slug ? "geen" : todo.slug}}</td>
+    </tr>
+    </tbody>
+  </table>
+</ng-container>
+<ng-container *ngIf="!(todos$ | async) as todos">
+  <p>Loading</p>
+</ng-container>
+
+
