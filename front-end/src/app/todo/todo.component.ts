@@ -4,6 +4,7 @@ import {Observable, switchMap} from "rxjs";
 import {TodoCategoryResponse} from "../models/TodoCategoryResponse";
 import {Category} from "../models/Category";
 import {ActivatedRoute, ParamMap} from "@angular/router";
+import { TodoService } from './todo.service';
 
 @Component({
   selector: 'app-todo',
@@ -11,17 +12,12 @@ import {ActivatedRoute, ParamMap} from "@angular/router";
   styleUrls: ['./todo.component.css']
 })
 export class TodoComponent implements OnInit {
-  private _http: HttpClient;
 
-  //public data: object | null = null;
   public todos$: Observable<TodoCategoryResponse[]> | null = null;
   public categories$: Observable<Category[]> | null = null;
   public slug: string | null = "";
-  private _route$: ActivatedRoute;
 
-  constructor(http: HttpClient, private route: ActivatedRoute) {
-    this._http = http;
-    this._route$ = route;
+  constructor(private todoService: TodoService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -29,12 +25,14 @@ export class TodoComponent implements OnInit {
       let slug = params.get('slug');
       this.slug = slug;
       if(slug == null) {
-        this.todos$ = this._http.get<TodoCategoryResponse[]>("http://localhost:5254/Todo/GetTodosWithCategories");
+        this.todos$ = this.todoService.getTodos();
+        // this.todos$ = this._http.get<TodoCategoryResponse[]>("http://localhost:5254/Todo/GetTodosWithCategories");
       } else {
-        this.todos$ = this._http.get<TodoCategoryResponse[]>(`https://localhost:7230/Category/${slug}/todos`);
+        // this.todos$ = this._http.get<TodoCategoryResponse[]>(`https://localhost:7230/Category/${slug}/todos`);
+        this.todos$ = this.todoService.getTodosByCategory(slug);
       }
     });
 
-    this.categories$ = this._http.get<Category[]>("https://localhost:7230/Category/Get");
+    this.categories$ = this.todoService.getCategories();
   }
 }

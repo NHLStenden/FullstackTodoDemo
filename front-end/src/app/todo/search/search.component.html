@@ -1,0 +1,18 @@
+<p>search works!</p>
+
+<div>
+  <input type="input"  (input)="search($event)">
+</div>
+
+<div *ngIf="selectedItems$ | async">
+  <button (click)="delete()">Delete</button>
+</div>
+<div *ngIf="(selectedItems$ | async) && (delete$ | async)">
+  <button (click)="areYouSure()">Are you sure</button>
+</div>
+
+
+
+<div *ngFor="let item of todos$ | async">
+  <p>{{item.description}} <button (click)="select(item)">Select</button></p>
+</div>

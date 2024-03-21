@@ -54,6 +54,14 @@ public class TodoController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet(nameof(Search))]
+    public ActionResult<IEnumerable<TodoCategoryResponse>> Search(string description)
+    {
+        var todosWithCategory = _todoRepository.Get(x => x.Description.Contains(description, StringComparison.OrdinalIgnoreCase));
+        var result = _mapper.Map<IEnumerable<TodoCategoryResponse>>(todosWithCategory);
+        return Ok(result);
+    }
+
     [HttpGet(nameof(GetById))]
     public ActionResult<Todo> GetById(int todoId)
     {
