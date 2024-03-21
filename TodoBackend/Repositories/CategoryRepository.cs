@@ -30,6 +30,12 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
         return result;
     }
 
+    public IEnumerable<Category> GetCategoryWithTodos()
+    {
+        return _db.Categories.
+            Include(x => x.Todos.Take(2)).ToList();
+    }
+
     public Category? FindCategoryByName(string name)
     {
         return _db.Categories.FirstOrDefault(x => x.Description == name);

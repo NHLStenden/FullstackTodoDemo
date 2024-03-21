@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using TodoBackend;
 using TodoBackend.Entities;
 using TodoBackend.Repositories;
@@ -26,7 +27,8 @@ builder.Services.AddScoped<ISlugService, SlugService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddDbContext<TodoContext>(options =>
-    options.UseNpgsql("User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TodoLesDemo;")
+        options.UseMySQL("Server=localhost;Database=TodoExampleEfCore;Uid=root;Pwd=Test@1234!;")
+    // /options.UseNpgsql("User ID=postgres;Password=postgres;Host=localhost;Port=5432;Database=TodoLesDemo;")
 );
 // builder.Services.AddSingleton<>()
 
@@ -64,6 +66,11 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
     DbSeed.Seed(db); //vult database met dummy data
+
+    var c = service.GetService(typeof(ICategoryRepository)) as CategoryRepository;
+    var ww = c.GetCategoryWithTodos();
+    // Console.WriteLine(ww.ToList());
+    Console.WriteLine("test");
 }
 
 // Configure the HTTP request pipeline.
@@ -73,7 +80,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors();
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseAuthorization();

@@ -6,4 +6,6 @@ public class Category
     public string Description { get; set; }
     
     public string Slug { get; set; }
+
+    public List<Todo> Todos { get; set; } = new List<Todo>();
 }

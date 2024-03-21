@@ -70,4 +70,10 @@ public class CategoryController : ControllerBase
         return CreatedAtAction(
             nameof(GetById), new {categoryId = result.CategoryId}, category);
     }
+
+    [HttpGet(nameof(GetCategoryWithTodos))]
+    public IEnumerable<Category> GetCategoryWithTodos()
+    {
+        return _categoryRepository.GetCategoryWithTodos();
+    }
 }
