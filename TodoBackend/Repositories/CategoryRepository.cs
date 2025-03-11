@@ -14,7 +14,6 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
 
     public IEnumerable<Todo> GetByCategoryId(int categoryId)
     {
-
         return _db.Todos
             .Where(x => x.CategoryId == categoryId)
             .Include(x => x.Category)
